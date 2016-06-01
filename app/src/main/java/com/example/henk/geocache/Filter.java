@@ -16,6 +16,7 @@ public class Filter extends SurfaceView {
     private Paint forText = new Paint();
     private Rect bulbSpace = new Rect();
     private Bitmap bulb = BitmapFactory.decodeResource(getResources(), R.mipmap.charmander);
+
     public Filter(Context context) {
         super(context);
         forText.setColor(Color.BLUE);

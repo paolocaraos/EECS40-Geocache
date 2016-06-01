@@ -39,6 +39,7 @@ public class CameraActivity extends AppCompatActivity {
 
             setContentView(layout);
         }
+
         else {
             Toast toast = Toast.makeText(getApplicationContext(), "Unable to find camera. Closing", Toast.LENGTH_SHORT);
             toast.show();
@@ -47,6 +48,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     public static Camera getCamera(){
+
         Camera camera = null;
         try{
             camera = Camera.open();
