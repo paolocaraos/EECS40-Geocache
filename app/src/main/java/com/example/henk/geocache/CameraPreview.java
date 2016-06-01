@@ -1,7 +1,7 @@
 package com.example.henk.geocache;
 
 import android.content.Context;
-import android.hardware.Camera;
+import android.hardware.camera2.*;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,9 +15,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     /* Taken from developer.android.com and modified*/
     private static final String TAG = "CameraPreview";
     private SurfaceHolder mHolder;
-    private Camera mCamera;
+    private CameraDevice mCamera;
 
-    public CameraPreview(Context context, Camera camera) {
+    public CameraPreview(Context context, CameraDevice camera) {
         super(context);
         mCamera = camera;
 
@@ -32,6 +32,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
+            mCamera.createCaptureSession()
             mCamera.setPreviewDisplay(holder);
             mCamera.startPreview();
         } catch (IOException e) {
