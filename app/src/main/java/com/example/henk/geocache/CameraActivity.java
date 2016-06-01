@@ -3,16 +3,22 @@ package com.example.henk.geocache;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.io.File;
 
@@ -21,7 +27,9 @@ public class CameraActivity extends Activity {
     Button button;
     Button movetoMaps;
     ImageView imageView;
-    static final int CAM_REQUEST = 1;
+    LinearLayout layout = (LinearLayout)findViewById(R.id.layout);
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
 
     Filter filter = new Filter(this);
 
@@ -37,7 +45,7 @@ public class CameraActivity extends Activity {
                 Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 File file = getFile();
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(camera_intent,CAM_REQUEST);
+                startActivityForResult(camera_intent,REQUEST_IMAGE_CAPTURE);
             }
         });
         /* moving to MapsActivity */
@@ -67,7 +75,20 @@ public class CameraActivity extends Activity {
     @Override
     /*get the image from the directory and put the image into imageview*/
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String path = "sdcard/camera_app/cam_image.jpg";
-        imageView.setImageDrawable(Drawable.createFromPath(path));
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            String path = "sdcard/camera_app/cam_image.jpg";
+            imageView.setImageDrawable(Drawable.createFromPath(path));
+            /*
+            Bundle extras = data.getExtras();
+            Bitmap cameraimage = (Bitmap) extras.get("data");
+            */
+            
+            /*adding filter to to the imageview*/
+            Bitmap result = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(result);
+            filter.draw(canvas);
+            filter.setLayoutParams(new FrameLayout.LayoutParams(25,25));
+            layout.addView(filter);
+        }
     }
 }
