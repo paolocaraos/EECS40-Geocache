@@ -2,12 +2,10 @@ package com.example.henk.geocache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.SurfaceView;
 import android.view.View;
 
 /**
@@ -16,7 +14,7 @@ import android.view.View;
 public class Filter extends View {
     private Paint forText = new Paint();
     private Rect pokeSpace = new Rect();
-    private Bitmap poke = BitmapFactory.decodeResource(getResources(), R.mipmap.charmander);
+    private Bitmap poke;
     public Filter(Context context) {
         super(context);
         setWillNotDraw(false); /*to call the ondraw method */

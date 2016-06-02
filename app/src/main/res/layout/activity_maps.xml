@@ -4,19 +4,18 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Camera"
-        android:id="@+id/camera"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Geocache"
         android:layout_gravity="center_horizontal"
-        android:onClick="onCamera"
-        android:nestedScrollingEnabled="true" />
+        android:id="@+id/textView" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="350dp"
+        android:layout_height="451dp"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:layout_gravity="center_horizontal"
@@ -25,24 +24,16 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Button
-            android:layout_width="379dp"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:id="@+id/Bzoomin"
-            android:onClick="onZoom"
-            android:layout_gravity="center_horizontal"/>
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:id="@+id/Bzoomout"
-            android:onClick="onZoom" />
+        android:orientation="horizontal">
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="372dp"
+        android:layout_height="wrap_content"
+        android:text="Camera"
+        android:id="@+id/camera"
+        android:onClick="onCamera"
+        android:nestedScrollingEnabled="true" />
 
 </LinearLayout>

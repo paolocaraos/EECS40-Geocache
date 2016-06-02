@@ -1,11 +1,14 @@
 package com.example.henk.geocache;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
@@ -18,23 +21,49 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-
     private GoogleMap mMap;
 
-    private DialogFragment warning;
+    private LocationManager locManager;
+    private LocationListener locListener;
+
+    private Location recentKnownLocation;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
 
+        locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                recentKnownLocation = location;
+
+                System.out.println("Your location: Lat =  " + location.getLatitude() + " Long = " + location.getLongitude());
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+
+        verifyPermissions();
+
         setUpMapIfNeeded();
-
-        warning = new GPSWarning();
     }
-
 
     /**
      * Manipulates the map once available.
@@ -46,47 +75,70 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        switch (requestCode)
+        {
+            case Constants.VERIFY_REQUEST:
+                verifyPermissions();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap)
     {
         mMap = googleMap;
-
         // Add a marker in UCI and move the camera
         LatLng uci = new LatLng(33.645928, -117.842820);
         mMap.addMarker(new MarkerOptions().position(uci).title("Marker at UCI"));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("My Location"));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uci, 18));
-
         try {
             mMap.setMyLocationEnabled(true);
-        } catch (SecurityException se) {
-            System.out.println(se.getMessage());
-            warning.show(getFragmentManager(), "Warning");
+        }catch (SecurityException e) {
+            e.printStackTrace();
         }
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(uci, Constants.DEFAULT_ZOOM_LEVEL));
     }
 
     @Override
     protected void onResume()
     {
         super.onResume();
-        setUpMapIfNeeded();
-    }
-
-    public void onZoom(View view)
-    {
-        if(view.getId() == R.id.Bzoomin) {
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-        }
-        if(view.getId() == R.id.Bzoomout) {
-            mMap.animateCamera(CameraUpdateFactory.zoomOut());
-        }
     }
 
     public void onCamera(View view)
     {
-        System.out.println("Clicked Camera");
-       Intent intent = new Intent(this, OtherActivity.class);
+       Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
+    }
+
+    private void verifyPermissions()
+    {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.INTERNET}
+                        , Constants.VERIFY_REQUEST);
+            }
+            return;
+        }
+
+
+        try {
+            locManager.requestLocationUpdates("gps", Constants.UPDATE_TIME_FREQUENCY, Constants.UPDATE_SPACE_FREQUENCY, locListener);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
@@ -114,27 +166,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             System.out.println(se.getMessage());
         }
     }
-
-
-     public static class GPSWarning extends DialogFragment {
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Geocache");
-            builder.setMessage("You have not enabled GPS locator on your phone.");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    // You don't have to do anything here if you just want it dismissed when clicked
-                }
-            });
-
-            // Create the AlertDialog object and return it
-            return builder.create();
-        }
-    }
-
- 
-
 }
