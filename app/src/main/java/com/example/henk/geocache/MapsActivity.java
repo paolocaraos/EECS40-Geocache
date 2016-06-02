@@ -1,5 +1,9 @@
 package com.example.henk.geocache;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,13 +21,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
 
+    private DialogFragment warning;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
+
         setUpMapIfNeeded();
+
+        warning = new GPSWarning();
     }
 
 
@@ -41,10 +50,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker in UCI and move the camera
         LatLng uci = new LatLng(33.645928, -117.842820);
         mMap.addMarker(new MarkerOptions().position(uci).title("Marker at UCI"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(uci));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("My Location"));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uci, 18));
+
+        try {
+            mMap.setMyLocationEnabled(true);
+        } catch (SecurityException se) {
+            System.out.println(se.getMessage());
+            warning.show(getFragmentManager(), "Warning");
+        }
     }
 
     @Override
@@ -57,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onZoom(View view)
     {
         if(view.getId() == R.id.Bzoomin) {
-            mMap.animateCamera(CameraUpdateFactory.zoomIn());
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
         }
         if(view.getId() == R.id.Bzoomout) {
             mMap.animateCamera(CameraUpdateFactory.zoomOut());
@@ -66,6 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onCamera(View view)
     {
+        System.out.println("Clicked Camera");
        Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
@@ -88,11 +107,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void setUpMap()
     {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("My Location"));
         try {
             mMap.setMyLocationEnabled(true);
         } catch (SecurityException se) {
             System.out.println(se.getMessage());
         }
+    }
+
+
+     class GPSWarning extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle("Geocache");
+            builder.setMessage("You have not enabled GPS locator on your phone.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // You don't have to do anything here if you just want it dismissed when clicked
+                }
+            });
+
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
+
+
+
     }
 }

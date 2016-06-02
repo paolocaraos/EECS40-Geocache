@@ -4,17 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.hardware.Camera;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
-import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -39,6 +31,10 @@ public class CameraActivity extends Activity {
         setContentView(R.layout.activity_camera);
         button = (Button) findViewById(R.id.button);
         imageView = (ImageView) findViewById(R.id.image_view);
+
+        System.out.println("Switched to camera.");
+
+        /*
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,16 +43,16 @@ public class CameraActivity extends Activity {
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(camera_intent,REQUEST_IMAGE_CAPTURE);
             }
-        });
+        });*/
         /* moving to MapsActivity */
-        movetoMaps = (Button) findViewById(R.id.button2);
+        /*movetoMaps = (Button) findViewById(R.id.button2);
         movetoMaps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gotoMaps = new Intent(context, MapsActivity.class);
                 startActivity(gotoMaps);
             }
-        });
+        });*/
     }
 
 

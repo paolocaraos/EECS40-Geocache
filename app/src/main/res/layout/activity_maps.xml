@@ -10,11 +10,16 @@
         android:text="Camera"
         android:id="@+id/camera"
         android:layout_gravity="center_horizontal"
-        android:onClick="onCamera" />
+        android:onClick="onCamera"
+        android:nestedScrollingEnabled="true" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="385dp"
-        android:layout_height="380dp" android:id="@+id/map" tools:context=".MapsActivity"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="350dp"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:layout_gravity="center_horizontal"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <LinearLayout
