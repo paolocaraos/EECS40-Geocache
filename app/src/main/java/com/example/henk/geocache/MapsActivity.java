@@ -85,7 +85,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onCamera(View view)
     {
         System.out.println("Clicked Camera");
-       Intent intent = new Intent(this, CameraActivity.class);
+       Intent intent = new Intent(this, OtherActivity.class);
         startActivity(intent);
     }
 
@@ -116,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-     class GPSWarning extends DialogFragment {
+     public static class GPSWarning extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -133,8 +133,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // Create the AlertDialog object and return it
             return builder.create();
         }
-
-
-
     }
+
+ 
+
 }
