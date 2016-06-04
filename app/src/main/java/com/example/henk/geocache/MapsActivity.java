@@ -11,12 +11,14 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -28,11 +30,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Location recentKnownLocation;
 
+    private MarkerOptions marker;
+    private Location markerLocation;
+    private float[] distanceBetween;
+    private TextView locationText;
+    private TextView distanceText;
+
+    public static class ConfigConstants
+    {
+        public static final int VERIFY_REQUEST = 10;
+
+        public static final int UPDATE_TIME_FREQUENCY = 5000;
+        public static final int UPDATE_SPACE_FREQUENCY = 0;
+
+        public static final int DEFAULT_ZOOM_LEVEL = 17;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
+
+        locationText = (TextView) findViewById(R.id.locationText);
+        distanceText = (TextView) findViewById(R.id.distanceText);
+
+        markerLocation = new Location("Marker");
 
         locManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locListener = new LocationListener() {
@@ -40,7 +63,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(Location location) {
                 recentKnownLocation = location;
 
-                System.out.println("Your location: Lat =  " + location.getLatitude() + " Long = " + location.getLongitude());
+                locationText.setText("This Lat = " + markerLocation.getLatitude() + "\nThis Long = " + markerLocation.getLongitude());
+
+                distanceText.setText("Distance = " + location.distanceTo(markerLocation));
+
             }
 
             @Override
@@ -60,26 +86,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
+
         verifyPermissions();
 
         setUpMapIfNeeded();
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
         switch (requestCode)
         {
-            case Constants.VERIFY_REQUEST:
+            case ConfigConstants.VERIFY_REQUEST:
                 verifyPermissions();
                 break;
             default:
@@ -88,19 +108,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
+    public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in UCI and move the camera
         LatLng uci = new LatLng(33.645928, -117.842820);
-        mMap.addMarker(new MarkerOptions().position(uci).title("Marker at UCI"));
+
+        marker = new MarkerOptions()
+                .position(uci)
+                .title("Marker")
+                .draggable(true);
+
+        mMap.addMarker(marker);
+
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                markerLocation.setLongitude(marker.getPosition().longitude);
+                markerLocation.setLatitude(marker.getPosition().latitude);
+            }
+        });
         try {
             mMap.setMyLocationEnabled(true);
         }catch (SecurityException e) {
             e.printStackTrace();
         }
 
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(uci, Constants.DEFAULT_ZOOM_LEVEL));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(uci, ConfigConstants.DEFAULT_ZOOM_LEVEL));
     }
 
     @Override
@@ -127,14 +170,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // for ActivityCompat#requestPermissions for more details.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.INTERNET}
-                        , Constants.VERIFY_REQUEST);
+                        , ConfigConstants.VERIFY_REQUEST);
             }
             return;
         }
 
 
         try {
-            locManager.requestLocationUpdates("gps", Constants.UPDATE_TIME_FREQUENCY, Constants.UPDATE_SPACE_FREQUENCY, locListener);
+            locManager.requestLocationUpdates("gps", ConfigConstants.UPDATE_TIME_FREQUENCY, ConfigConstants.UPDATE_SPACE_FREQUENCY, locListener);
         } catch (SecurityException e) {
             e.printStackTrace();
         }

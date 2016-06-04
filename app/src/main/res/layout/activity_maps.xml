@@ -28,11 +28,28 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="Lat = ?, Long = ?"
+        android:id="@+id/locationText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center_horizontal|bottom"
+        android:text="Distance = ?"
+        android:id="@+id/distanceText" />
+
     <Button
         android:layout_width="372dp"
         android:layout_height="wrap_content"
         android:text="Camera"
         android:id="@+id/camera"
+        android:layout_gravity="center_horizontal|bottom"
         android:onClick="onCamera"
         android:nestedScrollingEnabled="true" />
 

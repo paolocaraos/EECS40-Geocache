@@ -23,13 +23,7 @@ public class SpriteFactory{
 
     private Vector<Bitmap> rare = new Vector<Bitmap>(3,1);
 
-    public enum Biome{
-        FRESH_WATER,
-        PARK,
-        URBAN
-    }
-
-    private HashMap<Biome, Vector<Bitmap>> mapOfSpawnLists = new HashMap<Biome, Vector<Bitmap>>();
+    private HashMap<Biome.Type, Vector<Bitmap>> mapOfSpawnLists = new HashMap<Biome.Type, Vector<Bitmap>>();
 
     SpriteFactory(Context context){
         this.context = context;
@@ -47,5 +41,16 @@ public class SpriteFactory{
         urban.add(BitmapFactory.decodeResource(context.getResources(), R.mipmap.pikachu));
         //add more building pokemon
 
+        mapOfSpawnLists.put(Biome.Type.FRESH_WATER, water);
+        mapOfSpawnLists.put(Biome.Type.GRASSY, park);
+        mapOfSpawnLists.put(Biome.Type.URBAN, urban);
+        mapOfSpawnLists.put(Biome.Type.RARE, rare);
+    }
+
+    public Bitmap getLocalPokemon(Biome.Type biome)
+    {
+        Random r = new Random();
+        Vector<Bitmap> v = mapOfSpawnLists.get(biome);
+        return v.get(r.nextInt(v.size()));
     }
 }
