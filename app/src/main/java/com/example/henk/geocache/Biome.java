@@ -43,16 +43,42 @@ public class Biome {
             type = t;
             return this;
         }
+
+        double getLatitude(){
+            return latitude;
+        }
+
+        double getRadius(){
+            return radius_meters;
+        }
+
+        double getLongitude(){
+            return longitude;
+        }
+
+        Type getType(){
+            return type;
+        }
     }
 
-    final Instance ALDRICH_PARK = new Instance()
-            .setName("Aldrich Park")
-            .setRadius(147.1763)
+    public final Instance ALDRICH_PARK = new Instance()
+            .setName("UCI: Aldrich Park")
+            .setRadius(150.00000)
             .setLatitude(33.64979)
             .setLongitude(-117.842681)
             .setType(Type.GRASSY);
 
+    public final Instance ENGINEERING = new Instance()
+            .setName("UCI: Henry Samueli School of Engineering")
+            .setLatitude(33.643788)
+            .setLongitude(-117.840817)
+            .setRadius(100.0000)
+            .setType(Type.URBAN);
 
-
-
+    public final Instance STUDENT_CENTER = new Instance()
+            .setName("UCI: Student Center")
+            .setLatitude(33.648661)
+            .setLongitude(-117.842395)
+            .setRadius(140.0000)
+            .setType(Type.URBAN);
 }

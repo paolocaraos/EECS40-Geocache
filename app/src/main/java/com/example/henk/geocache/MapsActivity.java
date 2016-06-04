@@ -32,7 +32,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private MarkerOptions marker;
     private Location markerLocation;
-    private float[] distanceBetween;
     private TextView locationText;
     private TextView distanceText;
 
