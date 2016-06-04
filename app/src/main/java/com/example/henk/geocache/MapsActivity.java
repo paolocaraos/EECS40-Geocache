@@ -50,7 +50,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
-
         locationText = (TextView) findViewById(R.id.locationText);
         distanceText = (TextView) findViewById(R.id.distanceText);
 

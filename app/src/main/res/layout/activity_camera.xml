@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,18 +8,19 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:id="@+id/layout"
+    android:id="@+id/mainlayout"
     tools:context="com.example.henk.geocache.CameraActivity"
     android:weightSum="1">
 
     <Button
-        android:layout_width="200dp"
+        android:layout_width="100dp"
         android:layout_height= "wrap_content"
-        android:text="Capture Image"
+        android:text="Take a Photo"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
 
-        />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/image_view" />
         <!--android:onClick="onClick"-->
 
 
@@ -28,8 +29,8 @@
         android:layout_height="350dp"
         android:id="@+id/image_view"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
@@ -37,13 +38,23 @@
         android:text="Go to Maps"
         android:onClick="onClick"
         android:id="@+id/button2"
-        android:layout_gravity="center_horizontal" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1.94"></LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/button" />
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="170dp"
+        android:id="@+id/filter"
+        android:layout_alignBottom="@+id/image_view"
+        android:layout_alignStart="@+id/image_view" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Save Filter"
+        android:id="@+id/button3"
+        android:layout_alignBottom="@+id/button2"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
