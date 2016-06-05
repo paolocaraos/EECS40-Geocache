@@ -2,13 +2,12 @@ package com.example.henk.geocache;
 
 import android.graphics.Bitmap;
 
-import java.io.Serializable;
 import java.util.Vector;
 
 /**
  * Created by Paolo on 6/3/2016.
  */
-public class Pokemon implements Serializable{
+public class Pokemon{
 
     private Bitmap sprite;
 

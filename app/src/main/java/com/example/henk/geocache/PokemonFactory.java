@@ -101,12 +101,22 @@ public class PokemonFactory {
         return v.get(r.nextInt(v.size()));
     }
 
-    public Bitmap getPokemon(String name)
+    public Bitmap getPokemonSprite(String name)
+    {
+        for(Pokemon p: all) {
+            if(name.equals(p.getName()))
+                return p.getSprite();
+        }
+
+        return null;
+    }
+
+    public Pokemon getPokemon(String name)
     {
         for(Pokemon p: all)
         {
             if(name.equals(p.getName()))
-                return p.getSprite();
+                return p;
         }
 
         return null;

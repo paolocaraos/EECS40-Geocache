@@ -30,7 +30,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locManager;
     private LocationListener locListener;
 
-    private Location recentKnownLocation;
     private Biome recentKnownBiome;
 
     private MarkerOptions marker;
@@ -41,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView locationText;
 
     public PokemonFactory pokeFactory;
-    private String lastNearbyPokemonName;
+    private Trainer trainer;
 
     private Vector<Biome> biomeVector = new Vector<Biome>(3,1);
 
@@ -73,12 +72,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                recentKnownLocation = location;
-
                 if(!getCurrentBiome(location).equals(recentKnownBiome)) {
                     recentKnownBiome = getCurrentBiome(location);
-                    lastNearbyPokemonName = pokeFactory.getLocalPokemon(recentKnownBiome).getName();
-                    pokemonText.setText("Nearby Pokemon: " + lastNearbyPokemonName);
+                    trainer.encounterPokemon(pokeFactory.getLocalPokemon(recentKnownBiome));
+                    pokemonText.setText("Nearby Pokemon: " + trainer.getEncounteredPokemonName());
                 }
 
                 biomeText.setText("Biome: "+ recentKnownBiome.getType().name());
@@ -178,7 +175,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onCamera(View view)
     {
        Intent intent = new Intent(this, CameraActivity.class);
-        intent.putExtra("Nearby Pokemon", lastNearbyPokemonName);
+        intent.putExtra("Trainer", trainer);
         startActivity(intent);
     }
 

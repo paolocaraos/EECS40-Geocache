@@ -37,7 +37,7 @@ public class CameraActivity extends Activity {
     //creates bug... RelativeLayout mainlayout = (RelativeLayout)findViewById(R.id.mainlayout);
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private String nearbyPokemonName;
+    private Trainer trainer;
     private PokemonFactory pokemonFactory;
 
     @Override
@@ -47,7 +47,7 @@ public class CameraActivity extends Activity {
         setContentView(R.layout.activity_camera);
 
         //Added by Paolo: retrive pokemon from MapsActivity
-        nearbyPokemonName  = (String) getIntent().getSerializableExtra("Nearby Pokemon");
+        trainer  = (Trainer) getIntent().getSerializableExtra("Trainer");
         pokemonFactory = new PokemonFactory(this);
 
         button = (Button) findViewById(R.id.button);
@@ -89,7 +89,10 @@ public class CameraActivity extends Activity {
                     CharSequence sText = "The pokemon has been captured and saved to the camera_app folder!";
                     int sDuration = Toast.LENGTH_LONG;
                     Context sContext = getApplicationContext();
-                    Toast sToast = Toast.makeText(sContext,sText,sDuration);
+                    Toast sToast = Toast.makeText(sContext, sText, sDuration);
+
+                    trainer.recordPokemonCaught(pokemonFactory.getPokemon(trainer.getEncounteredPokemonName()));
+
                     sToast.show();
                 }
                 else {
@@ -115,7 +118,7 @@ public class CameraActivity extends Activity {
     }
 
     private File makeFile(){
-        File folder = new File ("sdcard/camera_app");
+        File folder = new File ("sdcard/Geocache/camera_app");
         imageNumber=0;
         //check for folder existence
         if(!folder.exists()){
@@ -133,7 +136,7 @@ public class CameraActivity extends Activity {
     }
 
     private File getPreviousFile(){
-        File folder = new File ("sdcard/camera_app");
+        File folder = new File ("sdcard/Geocache/camera_app");
         imageNumber=0;
         //check for folder existence
         if(!folder.exists()){
@@ -153,7 +156,7 @@ public class CameraActivity extends Activity {
     }
 
     private File getFile(){
-        File folder = new File ("sdcard/camera_app");
+        File folder = new File ("sdcard/Geocache/camera_app");
         //check for folder existence
         if(!folder.exists()){
             folder.mkdir();
@@ -191,7 +194,7 @@ public class CameraActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             System.out.println("Loading image to imageView, imageNumber = " + imageNumber);
-            String path = "sdcard/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";
+            String path = "sdcard/Geocache/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";
             File file = getPreviousFile();
             System.out.println("Loading image to imageView, imageNumber = " + imageNumber);
             //String path = "sdcard/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";
@@ -217,7 +220,7 @@ public class CameraActivity extends Activity {
             imageView.setImageBitmap(photo);
             //imageView.setImageDrawable(Drawable.createFromPath(path));
 
-            Bitmap poke = pokemonFactory.getPokemon(nearbyPokemonName);
+            Bitmap poke = pokemonFactory.getPokemonSprite(trainer.getEncounteredPokemonName());
 
             if(poke != null)
                 filter.setImageBitmap(poke);

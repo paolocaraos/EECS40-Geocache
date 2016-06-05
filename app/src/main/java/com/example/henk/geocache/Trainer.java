@@ -9,6 +9,7 @@ import java.util.Vector;
 public class Trainer implements Serializable{
 
     private String name;
+    private String encounteredPokemonName;
 
     private int score;
 
@@ -27,8 +28,23 @@ public class Trainer implements Serializable{
         score += i;
     }
 
-    Trainer addPokemonCaught(String  p){
-        pokemonCaught.add(p);
+    void encounterPokemon(Pokemon p){
+        encounteredPokemonName = p.getName();
+    }
+
+    String getEncounteredPokemonName(){
+        return encounteredPokemonName;
+    }
+
+    Trainer recordPokemonCaught(Pokemon  p){
+        String caughtName = p.getName();
+        for(String s: pokemonCaught){
+            if(caughtName.equals(s)){
+                return this;
+            }
+        }
+        pokemonCaught.add(caughtName);
+        addScore(p.getValue());
         return this;
     }
 
@@ -40,5 +56,13 @@ public class Trainer implements Serializable{
         }
 
         return s;
+    }
+
+    String getName(){
+        return name;
+    }
+
+    int getScore(){
+        return score;
     }
 }
