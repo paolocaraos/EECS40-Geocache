@@ -7,12 +7,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +34,10 @@ public class CameraActivity extends Activity {
     Button saveFilter;
     ImageView imageView;
     ImageView filter;
+    TextView textView1;
+    TextView textView2;
+    TextView textView3;
+
     int imageNumber;
     int lastKnownNumber;
     //creates bug... RelativeLayout mainlayout = (RelativeLayout)findViewById(R.id.mainlayout);
@@ -78,7 +89,23 @@ public class CameraActivity extends Activity {
             public void onClick(View v) {
                 if((globalphoto!=null)&&(globalpoke!=null)) {
                     mergeImages(globalphoto, globalpoke);
+
+                    /*success message*/
+                    CharSequence sText = "The pokemon has been captured and saved to the camera_app folder!";
+                    int sDuration = Toast.LENGTH_LONG;
+                    Context sContext = getApplicationContext();
+                    Toast sToast = Toast.makeText(sContext,sText,sDuration);
+                    sToast.show();
                 }
+                else {
+                    /*fail message*/
+                    CharSequence fText = "Failed to capture pokemon";
+                    int fDuration = Toast.LENGTH_SHORT;
+                    Context fContext = getApplicationContext();
+                    Toast fToast = Toast.makeText(fContext,fText,fDuration);
+                    fToast.show();
+                }
+
             }
         });
 
@@ -171,9 +198,20 @@ public class CameraActivity extends Activity {
             System.out.println("Loading image to imageView, imageNumber = " + imageNumber);
             String path = "sdcard/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";
             File file = getPreviousFile();
+            System.out.println("Loading image to imageView, imageNumber = " + imageNumber);
+            //String path = "sdcard/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";
             String path2 = file.getAbsolutePath();
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             Bitmap photo = BitmapFactory.decodeFile(path2,bmOptions);
+
+            /*print text onto screen*/
+            textView1 = (TextView) findViewById(R.id.textView1);
+            textView1.setVisibility(View.VISIBLE);
+            textView2 = (TextView) findViewById(R.id.textView2);
+            textView2.setVisibility(View.VISIBLE);
+            textView3 = (TextView) findViewById(R.id.textView3);
+            textView3.setVisibility(View.VISIBLE);
+
             /*scale down the bitmap size*/
             int scaling = (int) (photo.getHeight()*(512.0/photo.getWidth()));
             photo = Bitmap.createScaledBitmap(photo,512,scaling,true);

@@ -14,7 +14,7 @@
 
     <Button
         android:layout_width="100dp"
-        android:layout_height= "wrap_content"
+        android:layout_height= "50dp"
         android:text="Take a Photo"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
@@ -29,12 +29,12 @@
         android:layout_height="350dp"
         android:id="@+id/image_view"
         android:layout_gravity="center_horizontal"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
         android:text="Go to Maps"
         android:onClick="onClick"
         android:id="@+id/button2"
@@ -46,15 +46,48 @@
         android:layout_width="300dp"
         android:layout_height="170dp"
         android:id="@+id/filter"
-        android:layout_alignBottom="@+id/image_view"
+        android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/image_view" />
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:text="Save Filter"
+        android:layout_height="50dp"
+        android:text="Capture Pokemon"
         android:id="@+id/button3"
         android:layout_alignBottom="@+id/button2"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="5dp"
+        android:text="A wild Pokemon has appeared!"
+        android:textColor="@color/red"
+        android:visibility = "invisible"
+        android:id="@+id/textView1"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="5dp"
+        android:text="Press &quot; Capture Pokemon &quot; to capture the"
+        android:visibility = "invisible"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="pokemon to your photo!"
+        android:visibility = "invisible"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
