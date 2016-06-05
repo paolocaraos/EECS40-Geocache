@@ -7,12 +7,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,7 @@ public class CameraActivity extends Activity {
     TextView textView3;
 
     int imageNumber;
+    int lastKnownNumber;
     //creates bug... RelativeLayout mainlayout = (RelativeLayout)findViewById(R.id.mainlayout);
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
