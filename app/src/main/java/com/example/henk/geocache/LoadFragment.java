@@ -8,6 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by Henk on 2016/6/5.
@@ -16,6 +22,7 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
     Button resumeGame;
     Button loadUser;
     View view;
+    EditText oldUsername;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -38,6 +45,23 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
         }
         else if(button_text.equals("Load User")) {
             /*load user information*/
+            oldUsername = (EditText) view.findViewById(R.id.oldUsername);
+            String string = oldUsername.getText().toString();
+            File folder = new File ("sdcard/Geocache/user_profile");
+            //check for folder existence
+            if(!folder.exists()){
+                folder.mkdir();
+            }
+            String fileName = string + ".jpg";
+            File player_file = new File (folder,fileName);
+            OutputStream outStream = null;
+            byte[] bytes = string.getBytes();
+            try {
+                outStream = new FileOutputStream(player_file);
+                outStream.write(bytes);
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }

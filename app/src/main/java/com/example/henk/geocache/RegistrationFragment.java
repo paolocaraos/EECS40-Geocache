@@ -8,6 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by Henk on 2016/6/5.
@@ -15,6 +21,7 @@ import android.widget.Button;
 public class RegistrationFragment extends Fragment implements View.OnClickListener {
     Button regAndStart;
     View view;
+    EditText newUsername;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +34,26 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         /*need to CREATE the username data and pass to the next activity*/
+        newUsername = (EditText) view.findViewById(R.id.newUsername);
+        String string = newUsername.getText().toString();
+        File folder = new File ("sdcard/Geocache/user_profile");
+        //check for folder existence
+        if(!folder.exists()){
+            folder.mkdir();
+        }
+        String fileName = string + ".jpg";
+        File player_file = new File (folder,fileName);
+        OutputStream outStream = null;
+        byte[] bytes = string.getBytes();
+        try {
+            outStream = new FileOutputStream(player_file);
+            outStream.write(bytes);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+
+
         Intent gotoMaps = new Intent(getActivity(), MapsActivity.class);
         startActivity(gotoMaps);
     }
