@@ -52,7 +52,7 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
             if(!folder.exists()){
                 folder.mkdir();
             }
-            String fileName = string + ".jpg";
+            String fileName = string + ".txt";
             File player_file = new File (folder,fileName);
             OutputStream outStream = null;
             byte[] bytes = string.getBytes();

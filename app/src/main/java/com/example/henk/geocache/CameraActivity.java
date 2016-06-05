@@ -199,8 +199,6 @@ public class CameraActivity extends Activity {
     /*get the image from the directory and put the image into imageview*/
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            System.out.println("Loading image to imageView, imageNumber = " + imageNumber);
-            String path = "sdcard/Geocache/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";
             File file = getPreviousFile();
             System.out.println("Loading image to imageView, imageNumber = " + imageNumber);
             //String path = "sdcard/camera_app/cam_image" + String.valueOf(imageNumber) + ".jpg";

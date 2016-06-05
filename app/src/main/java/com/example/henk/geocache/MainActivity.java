@@ -18,10 +18,13 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
     TextView textView;
     Context context = this;
+
+    private Trainer trainer;
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        trainer = new Trainer();
         textView = (TextView) findViewById(R.id.reg_user);
         FragmentManager fragmentManager= getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -38,5 +41,9 @@ public class MainActivity extends Activity {
                 fragmentTransaction.commit();
             }
         });
+    }
+
+    Trainer getTrainer(){
+        return trainer;
     }
 }

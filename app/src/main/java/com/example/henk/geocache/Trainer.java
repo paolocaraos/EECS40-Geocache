@@ -15,8 +15,9 @@ public class Trainer implements Serializable{
 
     private Vector<String> pokemonCaught = new Vector<String>(3,1);
 
-    Trainer(String name){
-        this.name = name;
+    Trainer setName(String n){
+        name = n;
+        return this;
     }
 
     Trainer setScore(int i){
