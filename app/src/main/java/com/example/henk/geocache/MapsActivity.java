@@ -39,7 +39,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView pokemonText;
     private TextView locationNameText;
 
-    public static PokemonFactory pokeFactory;
+    public PokemonFactory pokeFactory;
 
     private Vector<Biome> biomeVector = new Vector<Biome>(3,1);
 
