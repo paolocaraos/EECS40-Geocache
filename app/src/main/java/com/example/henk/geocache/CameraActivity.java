@@ -7,17 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,12 +34,11 @@ public class CameraActivity extends Activity {
     TextView textView3;
 
     int imageNumber;
-    int lastKnownNumber;
     //creates bug... RelativeLayout mainlayout = (RelativeLayout)findViewById(R.id.mainlayout);
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-
-    //Filter filter = new Filter(this);
+    private String nearbyPokemonName;
+    private PokemonFactory pokemonFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +47,8 @@ public class CameraActivity extends Activity {
         setContentView(R.layout.activity_camera);
 
         //Added by Paolo: retrive pokemon from MapsActivity
-        getIntent().getSerializableExtra("Nearby Pokemon");
+        nearbyPokemonName  = (String) getIntent().getSerializableExtra("Nearby Pokemon");
+        pokemonFactory = new PokemonFactory(this);
 
         button = (Button) findViewById(R.id.button);
         imageView = (ImageView) findViewById(R.id.image_view);
@@ -222,26 +217,13 @@ public class CameraActivity extends Activity {
             imageView.setImageBitmap(photo);
             //imageView.setImageDrawable(Drawable.createFromPath(path));
 
-            /*adding filter to to the imageview*/
-            //Rect pokeSpace = new Rect();
-            Bitmap poke = BitmapFactory.decodeResource(getResources(), R.mipmap.charmander);
-            /*
-            int x = filter.getWidth()/2;
-            int y = filter.getHeight()/2;
-            int dx = filter.getHeight()/3;
-            int dy = filter.getHeight()/3;
-            pokeSpace.set(x-dx,y-dy,x+dx,y+dy);
-            */
-            filter.setImageBitmap(poke);
+            Bitmap poke = pokemonFactory.getPokemon(nearbyPokemonName);
+
+            if(poke != null)
+                filter.setImageBitmap(poke);
             poke = poke.createScaledBitmap(poke,photo.getWidth(),photo.getHeight()/2,true);
             globalphoto = photo;
             globalpoke = poke;
-
-            //Bitmap result = Bitmap.createBitmap(25, 25, Bitmap.Config.ARGB_8888);
-            //Canvas canvas = new Canvas(result);
-            /*filter.draw(canvas);
-            filter.setLayoutParams(new FrameLayout.LayoutParams(25,25));
-            layout.addView(filter);*/
 
         }
     }

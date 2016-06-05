@@ -12,10 +12,18 @@ public class Pokemon implements Serializable{
 
     private Bitmap sprite;
 
+    private int scoreValue = 100;
+
+    public static class Rarity{
+        static final int LEGENDARY = 1000;
+        static final int PIKA = 250;
+        static final int RARE = 100;
+        static final int COMMON = 50;
+    }
+
     private String name;
 
     private Vector<Biome.Type> listOfHabitat = new Vector<Biome.Type>(1,1);
-
 
     Pokemon(String n){
         this.name = n;
@@ -31,7 +39,18 @@ public class Pokemon implements Serializable{
         return this;
     }
 
+    Pokemon setScoreValue(int i){
+        scoreValue = i;
+        return this;
+    }
+
     Bitmap getSprite(){
         return sprite;
     }
+
+    int getValue(){
+        return scoreValue;
+    }
+
+    String getName(){ return name;}
 }

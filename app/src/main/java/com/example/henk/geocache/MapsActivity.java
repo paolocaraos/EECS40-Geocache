@@ -37,9 +37,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location markerLocation;
 
     private TextView pokemonText;
-    private TextView locationNameText;
+    private TextView biomeText;
+    private TextView locationText;
 
     public PokemonFactory pokeFactory;
+    private String lastNearbyPokemonName;
 
     private Vector<Biome> biomeVector = new Vector<Biome>(3,1);
 
@@ -62,7 +64,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         pokeFactory = new PokemonFactory(this);
 
         pokemonText = (TextView) findViewById(R.id.pokemonText);
-        locationNameText = (TextView) findViewById(R.id.locationNameText);
+        biomeText = (TextView) findViewById(R.id.biomeText);
+        locationText = (TextView) findViewById(R.id.locationText);
 
         markerLocation = new Location("Marker");
 
@@ -71,10 +74,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(Location location) {
                 recentKnownLocation = location;
-                recentKnownBiome = getCurrentBiome();
 
-                locationNameText.setText("Biome: "+ recentKnownBiome.getType().name());
-                pokemonText.setText("Nearby Pokemon: " + pokeFactory.getLocalPokemon(recentKnownBiome));
+                if(!getCurrentBiome(location).equals(recentKnownBiome)) {
+                    recentKnownBiome = getCurrentBiome(location);
+                    lastNearbyPokemonName = pokeFactory.getLocalPokemon(recentKnownBiome).getName();
+                    pokemonText.setText("Nearby Pokemon: " + lastNearbyPokemonName);
+                }
+
+                biomeText.setText("Biome: "+ recentKnownBiome.getType().name());
+                locationText.setText("My Location: " + recentKnownBiome.getName()
+                        +"\nMy Lat = " + location.getLatitude()
+                        +"\nMy Long = " + location.getLongitude()
+                        +"\n Marker Lat = " + markerLocation.getLatitude()
+                        +"\nMarker Long = " + markerLocation.getLongitude()
+                        +"\nDistanceToMark = "+ location.distanceTo(markerLocation));
             }
 
             @Override
@@ -165,7 +178,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onCamera(View view)
     {
        Intent intent = new Intent(this, CameraActivity.class);
-        intent.putExtra("Nearby Pokemon", pokeFactory.getLocalPokemon(getCurrentBiome()));
+        intent.putExtra("Nearby Pokemon", lastNearbyPokemonName);
         startActivity(intent);
     }
 
@@ -234,21 +247,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build());
 
         biomeVector.add(new Biome.Builder()
-                .setName("Henry Samueli of School Of Engineering")
+                .setName("UCI: Henry Samueli of School Of Engineering")
                 .setRadius(Biome.Constants.ENGINEERING_RADIUS_IN_METERS)
                 .setLatitude(Biome.Constants.ENGINEERING_LAT)
                 .setLongitude(Biome.Constants.ENGINEERING_LONG)
                 .setType(Biome.Constants.ENGINEERING_BIOME_TYPE)
                 .build());
+
+        biomeVector.add(new Biome.Builder()
+                .setName("UCI: Infinity Fountain")
+                .setRadius(Biome.Constants.INFINITY_FOUNTAIN_RADIUS_IN_METERS)
+                .setLatitude(Biome.Constants.INFINITY_FOUNTAIN_LAT)
+                .setLongitude(Biome.Constants.INFINITY_FOUNTAIN_LONG)
+                .setType(Biome.Constants.INFINITY_FOUNTAIN_BIOME_TYPE)
+                .build());
     }
 
-    private Biome getCurrentBiome(){
+    private Biome getCurrentBiome(Location loc){
+        Biome closestBiome = null;
+        float closestDistance = 2000;
+
         for(Biome b: biomeVector){
-            if (b.getRadius() > recentKnownLocation.distanceTo(b.getLocation())){
-                return b;
+            float f =  loc.distanceTo(b.getLocation());
+            if (b.getRadius() > f){
+                if(f < closestDistance){
+                    closestBiome = b;
+                    closestDistance = f;
+                }
             }
         }
 
-        return null;
+        return closestBiome;
     }
 }
