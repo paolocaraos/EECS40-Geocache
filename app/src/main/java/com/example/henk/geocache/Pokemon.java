@@ -2,18 +2,20 @@ package com.example.henk.geocache;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
  * Created by Paolo on 6/3/2016.
  */
-public class Pokemon {
+public class Pokemon implements Serializable{
 
     private Bitmap sprite;
 
     private String name;
 
     private Vector<Biome.Type> listOfHabitat = new Vector<Biome.Type>(1,1);
+
 
     Pokemon(String n){
         this.name = n;

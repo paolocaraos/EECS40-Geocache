@@ -15,7 +15,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="451dp"
+        android:layout_height="341dp"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:layout_gravity="center_horizontal"
@@ -33,16 +33,16 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="center_horizontal|bottom"
-        android:text="Lat = ?, Long = ?"
-        android:id="@+id/locationText" />
+        android:text="Location ???"
+        android:id="@+id/locationNameText" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_gravity="center_horizontal|bottom"
-        android:text="Distance = ?"
-        android:id="@+id/distanceText" />
+        android:text="Nearby Pokemon: "
+        android:id="@+id/pokemonText" />
 
     <Button
         android:layout_width="372dp"

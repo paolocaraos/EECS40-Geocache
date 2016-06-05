@@ -7,17 +7,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,7 +41,8 @@ public class CameraActivity extends Activity {
 
         setContentView(R.layout.activity_camera);
 
-        System.out.println("Switched to camera.");
+        //Added by Paolo: retrive pokemon from MapsActivity
+        getIntent().getSerializableExtra("Nearby Pokemon");
 
         button = (Button) findViewById(R.id.button);
         imageView = (ImageView) findViewById(R.id.image_view);

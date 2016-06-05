@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Vector;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -29,17 +31,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationListener locListener;
 
     private Location recentKnownLocation;
+    private Biome recentKnownBiome;
 
     private MarkerOptions marker;
     private Location markerLocation;
-    private TextView locationText;
-    private TextView distanceText;
+
+    private TextView pokemonText;
+    private TextView locationNameText;
+
+    public static PokemonFactory pokeFactory;
+
+    private Vector<Biome> biomeVector = new Vector<Biome>(3,1);
 
     public static class ConfigConstants
     {
         public static final int VERIFY_REQUEST = 10;
 
-        public static final int UPDATE_TIME_FREQUENCY = 5000;
+        public static final int UPDATE_TIME_FREQUENCY = 1000;
         public static final int UPDATE_SPACE_FREQUENCY = 0;
 
         public static final int DEFAULT_ZOOM_LEVEL = 17;
@@ -50,8 +58,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
-        locationText = (TextView) findViewById(R.id.locationText);
-        distanceText = (TextView) findViewById(R.id.distanceText);
+
+        pokeFactory = new PokemonFactory(this);
+
+        pokemonText = (TextView) findViewById(R.id.pokemonText);
+        locationNameText = (TextView) findViewById(R.id.locationNameText);
 
         markerLocation = new Location("Marker");
 
@@ -60,11 +71,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(Location location) {
                 recentKnownLocation = location;
+                recentKnownBiome = getCurrentBiome();
 
-                locationText.setText("This Lat = " + markerLocation.getLatitude() + "\nThis Long = " + markerLocation.getLongitude());
-
-                distanceText.setText("Distance = " + location.distanceTo(markerLocation));
-
+                locationNameText.setText("Biome: "+ recentKnownBiome.getType().name());
+                pokemonText.setText("Nearby Pokemon: " + pokeFactory.getLocalPokemon(recentKnownBiome));
             }
 
             @Override
@@ -88,6 +98,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         verifyPermissions();
 
         setUpMapIfNeeded();
+
+        setUpBiomes();
     }
 
 
@@ -109,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // Add a marker in UCI and move the camera
-        LatLng uci = new LatLng(33.645928, -117.842820);
+        LatLng uci = new LatLng(Biome.Constants.UCI_LAT, Biome.Constants.UCI_LONG);
 
         marker = new MarkerOptions()
                 .position(uci)
@@ -153,19 +165,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onCamera(View view)
     {
        Intent intent = new Intent(this, CameraActivity.class);
+        intent.putExtra("Nearby Pokemon", pokeFactory.getLocalPokemon(getCurrentBiome()));
         startActivity(intent);
     }
 
     private void verifyPermissions()
     {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.INTERNET}
                         , ConfigConstants.VERIFY_REQUEST);
@@ -206,5 +213,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (SecurityException se) {
             System.out.println(se.getMessage());
         }
+    }
+
+    private void setUpBiomes()
+    {
+        biomeVector.add(new Biome.Builder()
+                .setName("UCI: Aldrich Park")
+                .setRadius(Biome.Constants.ALDRICH_PARK_RADIUS_IN_METERS)
+                .setLatitude(Biome.Constants.ALDRICH_PARK_LAT)
+                .setLongitude(Biome.Constants.ALDRICH_PARK_LONG)
+                .setType(Biome.Constants.ALDRICH_PARK_BIOME_TYPE)
+                .build());
+
+        biomeVector.add(new Biome.Builder()
+                .setName("UCI: Student Center")
+                .setRadius(Biome.Constants.STUDENT_CENTER_RADIUS_IN_METERS)
+                .setLatitude(Biome.Constants.STUDENT_CENTER_LAT)
+                .setLongitude(Biome.Constants.STUDENT_CENTER_LONG)
+                .setType(Biome.Constants.STUDENT_CENTER_BIOME_TYPE)
+                .build());
+
+        biomeVector.add(new Biome.Builder()
+                .setName("Henry Samueli of School Of Engineering")
+                .setRadius(Biome.Constants.ENGINEERING_RADIUS_IN_METERS)
+                .setLatitude(Biome.Constants.ENGINEERING_LAT)
+                .setLongitude(Biome.Constants.ENGINEERING_LONG)
+                .setType(Biome.Constants.ENGINEERING_BIOME_TYPE)
+                .build());
+    }
+
+    private Biome getCurrentBiome(){
+        for(Biome b: biomeVector){
+            if (b.getRadius() > recentKnownLocation.distanceTo(b.getLocation())){
+                return b;
+            }
+        }
+
+        return null;
     }
 }

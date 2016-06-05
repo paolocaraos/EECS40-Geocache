@@ -54,10 +54,13 @@ public class PokemonFactory {
         mapOfSpawnLists.put(Biome.Type.RARE, rare);
     }
 
-    public Pokemon getLocalPokemon(Biome.Type biome)
+    public Pokemon getLocalPokemon(Biome biome)
     {
+        if(biome == null)
+            return null;
+
         Random r = new Random();
-        Vector<Pokemon> v = mapOfSpawnLists.get(biome);
+        Vector<Pokemon> v = mapOfSpawnLists.get(biome.getType());
         return v.get(r.nextInt(v.size()));
     }
 }
