@@ -1,6 +1,8 @@
 package com.example.henk.geocache;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,17 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.OutputStream;
 
 /**
  * Created by Henk on 2016/6/5.
  */
 public class LoadFragment extends Fragment implements View.OnClickListener {
-    Button resumeGame;
     Button loadUser;
     View view;
     EditText oldUsername;
@@ -27,8 +31,6 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view = inflater.inflate(R.layout.load_fragment,container,false);
-        resumeGame = (Button) view.findViewById(R.id.resume);
-        resumeGame.setOnClickListener(this);
         loadUser = (Button) view.findViewById(R.id.loadUser);
         loadUser.setOnClickListener(this);
         return view;
@@ -36,32 +38,44 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        String button_text;
-        button_text = ((Button) v).getText().toString();
-        if(button_text.equals("Resume Game")) {
-            /*need to FIND the username data to pass to the next activity*/
-            Intent gotoMaps = new Intent(getActivity(), MapsActivity.class);
-            startActivity(gotoMaps);
+        Trainer trainer = new Trainer();
+        /*gets username*/
+        oldUsername = (EditText) view.findViewById(R.id.oldUsername);
+        String string = oldUsername.getText().toString();
+
+        /*access file in storage*/
+        File folder = new File ("sdcard/Geocache/user_profile");
+        //check for folder existence
+        if(!folder.exists()){
+            folder.mkdir();
         }
-        else if(button_text.equals("Load User")) {
-            /*load user information*/
-            oldUsername = (EditText) view.findViewById(R.id.oldUsername);
-            String string = oldUsername.getText().toString();
-            File folder = new File ("sdcard/Geocache/user_profile");
-            //check for folder existence
-            if(!folder.exists()){
-                folder.mkdir();
-            }
-            String fileName = string + ".txt";
-            File player_file = new File (folder,fileName);
-            OutputStream outStream = null;
-            byte[] bytes = string.getBytes();
-            try {
-                outStream = new FileOutputStream(player_file);
-                outStream.write(bytes);
-            } catch(IOException e) {
+        String fileName = string + ".txt";
+        File player_file = new File (folder,fileName);
+
+        /*gets trainer object*/
+        if(!player_file.exists()){
+            /*error message*/
+            CharSequence fText = "Username hasn't been created yet. Please try again";
+            int fDuration = Toast.LENGTH_LONG;
+            Context fContext = getActivity();
+            Toast fToast = Toast.makeText(fContext,fText,fDuration);
+            fToast.show();
+        }
+        else if(player_file.exists()){
+            try{
+                FileInputStream fis = new FileInputStream(player_file.getAbsolutePath());
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                trainer = (Trainer)ois.readObject();
+                ois.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch(ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            /*passing trainer obj to maps*/
+            Intent resultIntent = new Intent(getActivity(), MapsActivity.class);
+            resultIntent.putExtra("Trainer", trainer);
+            startActivity(resultIntent);
         }
 
     }

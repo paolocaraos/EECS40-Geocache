@@ -36,7 +36,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        /*need to CREATE the username data and pass to the next activity*/
+        /*need to CREATE the username data*/
         newUsername = (EditText) view.findViewById(R.id.newUsername);
         String string = newUsername.getText().toString();
         trainer = ((MainActivity)getActivity()).getTrainer().setName(string);
@@ -48,11 +48,11 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         String fileName = string + ".txt";
         File player_file = new File (folder,fileName);
 
-
         try {
             FileOutputStream fos = new FileOutputStream(player_file.getAbsolutePath());
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(trainer);
+            oos.close();
         } catch(IOException e) {
             e.printStackTrace();
         }

@@ -45,10 +45,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView pokemonText;
     private TextView biomeText;
     private TextView locationText;
+    private TextView username;
+    private TextView points;
+    private TextView pokeCaught;
     private Button profileButton;
 
     public PokemonFactory pokeFactory;
     private Trainer trainer;
+    private Trainer receiveTrainer;
 
     private Vector<Biome> biomeVector = new Vector<Biome>(3, 1);
 
@@ -69,11 +73,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         setContentView(R.layout.activity_maps);
 
+        //added by Henk to get trainer obj from main activity
+        receiveTrainer  = (Trainer) getIntent().getSerializableExtra("Trainer");
+
         pokeFactory = new PokemonFactory(this);
 
         pokemonText = (TextView) findViewById(R.id.pokemonText);
         biomeText = (TextView) findViewById(R.id.biomeText);
         locationText = (TextView) findViewById(R.id.locationText);
+        username = (TextView) findViewById(R.id.username);
+        points = (TextView) findViewById(R.id.points);
+        pokeCaught = (TextView) findViewById(R.id.pokeCaught);
+
+        String usernameText = "Username: " + receiveTrainer.getName();
+        String pointsText = "Score: " + String.valueOf(receiveTrainer.getScore());
+        String pokeCaughtText = "Pokemon Caught: " + receiveTrainer.getListOfCaughtPokemon();
+        username.setText(usernameText);
+        points.setText(pointsText);
+        pokeCaught.setText(pokeCaughtText);
 
         profileButton = (Button) findViewById(R.id.toProfile);
         profileButton.setOnClickListener(new View.OnClickListener() {
