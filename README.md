@@ -4,7 +4,7 @@ Geocache (Pokemon Themed)
 EECS 40 Spring 2016 
 Professor Brian Demsky
 
-Assignment 4 : Pokeban(Sokoban)
+Assignment 4 : Geocache
 
 Property of Henk Hsiung and Paolo Caraos
 
