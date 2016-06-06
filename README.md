@@ -33,7 +33,8 @@ Notes
 ---------------
 The application allows for more pokemon to be added into different regions if the developer wishes.
 Both the pictures and the user profile information is stored in an external storage folder named Geocache.
-The user profile is stored as .txt but is not mean't to be readable
+The user profile is stored as .txt but is not mean't to be readable.
+This application only works within UCI campus
 
 
 
