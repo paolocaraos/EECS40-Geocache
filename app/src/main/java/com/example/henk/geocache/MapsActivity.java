@@ -110,36 +110,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if(recentKnownBiome != null) {
                         trainer.encounterPokemon(pokeFactory.getLocalPokemon(recentKnownBiome));
                         pokemonText.setText("Nearby Pokemon: " + trainer.getEncounteredPokemonName());
-                        biomeText.setText("Biome: " + recentKnownBiome.getType().name());
+                        biomeText.setText("My Location: " + recentKnownBiome.getName()+ "\nBiome: " + recentKnownBiome.getType().name());
 
-                        locationText.setText("My Location: " + recentKnownBiome.getName()
-
-
-                        //Developer's Code: Uncomment these to get coordinates of locations
-
-                        //Necessary in making more biomes.
-
-                        + "\nMy Lat = " + location.getLatitude()
-                        + "\nMy Long = " + location.getLongitude()
-                                /*
-                        + "\n Marker Lat = " + markerLocation.getLatitude()
-                        + "\nMarker Long = " + markerLocation.getLongitude()*/
-                        + "\nDistanceToMark = " + location.distanceTo(markerLocation));
                     }
                     else{
-                        biomeText.setText("Biome: null");
-                        locationText.setText("My Location: null"
-
-
-
-
-                        + "\nMy Lat = " + location.getLatitude()
-                        + "\nMy Long = " + location.getLongitude()/*
-                        + "\n Marker Lat = " + markerLocation.getLatitude()
-                        + "\nMarker Long = " + markerLocation.getLongitude()*/
-                        + "\nDistanceToMark = " + location.distanceTo(markerLocation));
+                        biomeText.setText("Biome: null\n My Location: null");
                     }
                 }
+                locationText.setText(
+
+
+
+
+                         "\nMy Lat = " + location.getLatitude()
+                        + "\nMy Long = " + location.getLongitude()/*
+                        + "\n Marker Lat = " + markerLocation.getLatitude()
+                        + "\nMarker Long = " + markerLocation.getLongitude()
+                        + "\nDistanceToMark = " + location.distanceTo(markerLocation)*/);
+
                 String usernameText = "Username: " + trainer.getName();
                 String pointsText = "Score: " + String.valueOf(trainer.getScore());
                 username.setText(usernameText);
@@ -400,7 +388,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Maps Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
+                // make sure this auto-gienerated web page URL is correct.
                 // Otherwise, set the URL to null.
                 Uri.parse("http://host/path"),
                 // TODO: Make sure this auto-generated app deep link URI is correct.
