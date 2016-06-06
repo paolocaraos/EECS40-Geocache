@@ -14,7 +14,7 @@
 
     <Button
         android:layout_width="100dp"
-        android:layout_height= "50dp"
+        android:layout_height= "57dp"
         android:text="Take a Photo"
         android:id="@+id/button"
         android:layout_gravity="center_horizontal"
@@ -33,8 +33,8 @@
         android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="130dp"
-        android:layout_height="50dp"
+        android:layout_width="120dp"
+        android:layout_height="57dp"
         android:text="Go to Maps"
         android:onClick="onClick"
         android:id="@+id/button2"
@@ -51,7 +51,7 @@
 
     <Button
         android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_height="57dp"
         android:text="Capture Pokemon"
         android:id="@+id/button3"
         android:layout_alignBottom="@+id/button2"

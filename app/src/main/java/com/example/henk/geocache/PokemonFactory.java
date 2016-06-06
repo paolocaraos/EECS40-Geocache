@@ -39,10 +39,31 @@ public class PokemonFactory {
                 .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.squirtle))
                 .setScoreValue(Pokemon.Rarity.RARE)
                 .addHabitat(Biome.Type.FRESH_WATER));
-        //add more water types
+
+        water.add(new Pokemon("Polywrath")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.polywrath))
+                .setScoreValue(Pokemon.Rarity.RARE)
+                .addHabitat(Biome.Type.FRESH_WATER));
+
+        water.add(new Pokemon("Surskit")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.surskit))
+                .setScoreValue(Pokemon.Rarity.COMMON)
+                .addHabitat(Biome.Type.FRESH_WATER));
 
         park.add(new Pokemon("Bulbasaur")
                 .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.bulbasaur))
+                .setScoreValue(Pokemon.Rarity.RARE)
+                .addHabitat(Biome.Type.GRASSY));
+        park.add(new Pokemon("Pidgey")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.pidgey))
+                .setScoreValue(Pokemon.Rarity.COMMON)
+                .addHabitat(Biome.Type.GRASSY));
+        park.add(new Pokemon("Ralts")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ralts))
+                .setScoreValue(Pokemon.Rarity.RARE)
+                .addHabitat(Biome.Type.GRASSY));
+        park.add(new Pokemon("Scyther")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.scyther))
                 .setScoreValue(Pokemon.Rarity.RARE)
                 .addHabitat(Biome.Type.GRASSY));
 
@@ -53,6 +74,14 @@ public class PokemonFactory {
         urban.add(new Pokemon("Pikachu")
                 .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.pikachu))
                 .setScoreValue(Pokemon.Rarity.PIKA)
+                .addHabitat(Biome.Type.URBAN));
+        urban.add(new Pokemon("Pidgey")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.pidgey))
+                .setScoreValue(Pokemon.Rarity.COMMON)
+                .addHabitat(Biome.Type.URBAN));
+        urban.add(new Pokemon("Ralts")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ralts))
+                .setScoreValue(Pokemon.Rarity.RARE)
                 .addHabitat(Biome.Type.URBAN));
         //add more building pokemon
 
@@ -89,6 +118,27 @@ public class PokemonFactory {
                 .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.pikachu))
                 .setScoreValue(Pokemon.Rarity.PIKA)
                 .addHabitat(Biome.Type.URBAN));
+        all.add(new Pokemon("Ralts")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ralts))
+                .setScoreValue(Pokemon.Rarity.RARE)
+                .addHabitat(Biome.Type.URBAN));
+        all.add(new Pokemon("Pidgey")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.pidgey))
+                .setScoreValue(Pokemon.Rarity.COMMON)
+                .addHabitat(Biome.Type.URBAN));
+        all.add(new Pokemon("Scyther")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.scyther))
+                .setScoreValue(Pokemon.Rarity.RARE)
+                .addHabitat(Biome.Type.GRASSY));
+        all.add(new Pokemon("Polywrath")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.polywrath))
+                .setScoreValue(Pokemon.Rarity.RARE)
+                .addHabitat(Biome.Type.FRESH_WATER));
+
+        all.add(new Pokemon("Surskit")
+                .setSprite(BitmapFactory.decodeResource(context.getResources(), R.mipmap.surskit))
+                .setScoreValue(Pokemon.Rarity.COMMON)
+                .addHabitat(Biome.Type.FRESH_WATER));
     }
 
     public Pokemon getLocalPokemon(Biome biome)
