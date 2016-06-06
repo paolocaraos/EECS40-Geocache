@@ -101,31 +101,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                /*
+                if(recentKnownBiome == null)
+                    recentKnownBiome = biomeVector.elementAt(0);*/
+
                 if (!getCurrentBiome(location).equals(recentKnownBiome)) {
                     recentKnownBiome = getCurrentBiome(location);
-                    trainer.encounterPokemon(pokeFactory.getLocalPokemon(recentKnownBiome));
-                    pokemonText.setText("Nearby Pokemon: " + trainer.getEncounteredPokemonName());
-                }
+                    if(recentKnownBiome != null) {
+                        trainer.encounterPokemon(pokeFactory.getLocalPokemon(recentKnownBiome));
+                        pokemonText.setText("Nearby Pokemon: " + trainer.getEncounteredPokemonName());
+                        biomeText.setText("Biome: " + recentKnownBiome.getType().name());
 
-                biomeText.setText("Biome: " + recentKnownBiome.getType().name());
-                locationText.setText("My Location: " + recentKnownBiome.getName()
-                        /*
+                        locationText.setText("My Location: " + recentKnownBiome.getName()
 
-                        Developer's Code: Uncomment these to get coordinates of locations
 
-                        Necessary in making more biomes.
+                        //Developer's Code: Uncomment these to get coordinates of locations
+
+                        //Necessary in making more biomes.
 
                         + "\nMy Lat = " + location.getLatitude()
                         + "\nMy Long = " + location.getLongitude()
+                                /*
                         + "\n Marker Lat = " + markerLocation.getLatitude()
-                        + "\nMarker Long = " + markerLocation.getLongitude()
-                        + "\nDistanceToMark = " + location.distanceTo(markerLocation)*/);
+                        + "\nMarker Long = " + markerLocation.getLongitude()*/
+                        + "\nDistanceToMark = " + location.distanceTo(markerLocation));
+                    }
+                    else{
+                        biomeText.setText("Biome: null");
+                        locationText.setText("My Location: null"
 
+
+
+
+                        + "\nMy Lat = " + location.getLatitude()
+                        + "\nMy Long = " + location.getLongitude()/*
+                        + "\n Marker Lat = " + markerLocation.getLatitude()
+                        + "\nMarker Long = " + markerLocation.getLongitude()*/
+                        + "\nDistanceToMark = " + location.distanceTo(markerLocation));
+                    }
+                }
                 String usernameText = "Username: " + trainer.getName();
                 String pointsText = "Score: " + String.valueOf(trainer.getScore());
                 username.setText(usernameText);
                 points.setText(pointsText);
             }
+
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -285,6 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void setUpBiomes() {
+
         biomeVector.add(new Biome.Builder()
                 .setName("UCI: Aldrich Park")
                 .setRadius(Biome.Constants.ALDRICH_PARK_RADIUS_IN_METERS)
@@ -316,11 +337,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .setLongitude(Biome.Constants.INFINITY_FOUNTAIN_LONG)
                 .setType(Biome.Constants.INFINITY_FOUNTAIN_BIOME_TYPE)
                 .build());
+
+        biomeVector.add(new Biome.Builder()
+                .setName("UCI: Campus")
+                .setRadius(Biome.Constants.EVERYWHERE_RADIUS_IN_METERS)
+                .setLatitude(Biome.Constants.EVERYWHERE_LAT)
+                .setLongitude(Biome.Constants.EVERYWHERE_LONG)
+                .setType(Biome.Constants.EVERYWHERE_BIOME_TYPE)
+                .build());
     }
 
     private Biome getCurrentBiome(Location loc) {
         Biome closestBiome = null;
-        float closestDistance = 2000;
+        float closestDistance = 11000;
 
         for (Biome b : biomeVector) {
             float f = loc.distanceTo(b.getLocation());

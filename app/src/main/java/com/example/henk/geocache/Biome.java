@@ -25,8 +25,8 @@ public class Biome{
         static final float STUDENT_CENTER_RADIUS_IN_METERS = 135;
         static final Type STUDENT_CENTER_BIOME_TYPE = Type.URBAN;
 
-        static final double ALDRICH_PARK_LAT = 33.64979;
-        static final double ALDRICH_PARK_LONG = -117.842681;
+        static final double ALDRICH_PARK_LAT = 33.645928;
+        static final double ALDRICH_PARK_LONG = -117.842820;
         static final float ALDRICH_PARK_RADIUS_IN_METERS = 144;
         static final Type ALDRICH_PARK_BIOME_TYPE = Type.GRASSY;
 
@@ -39,6 +39,12 @@ public class Biome{
         static final double INFINITY_FOUNTAIN_LONG = -117.843529;
         static final float INFINITY_FOUNTAIN_RADIUS_IN_METERS = 15;
         static final Type INFINITY_FOUNTAIN_BIOME_TYPE = Type.FRESH_WATER;
+
+        static final double EVERYWHERE_LAT = 33.645928;
+        static final double EVERYWHERE_LONG = -117.842820;
+        static final float EVERYWHERE_RADIUS_IN_METERS = 10000;
+        static final Type EVERYWHERE_BIOME_TYPE = Type.RARE;
+
     }
 
     private String Name;
