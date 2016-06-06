@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
 public class CameraActivity extends Activity {
@@ -97,6 +98,7 @@ public class CameraActivity extends Activity {
 
                     trainer.recordPokemonCaught(pokemonFactory.getPokemon(trainer.getEncounteredPokemonName()));
 
+                    saveUser();
                     sToast.show();
                 }
                 else {
@@ -171,6 +173,18 @@ public class CameraActivity extends Activity {
         return image_file;
     }
 
+    private File getUserFile(){
+        File folder = new File ("sdcard/Geocache/user_profile");
+        //check for folder existence
+        if(!folder.exists()){
+            folder.mkdir();
+        }
+        String profileName = trainer.getName() + ".txt";
+        File file = new File (folder,profileName);
+
+        return file;
+    }
+
     public void mergeImages(Bitmap bottom, Bitmap top){
         Bitmap combine = Bitmap.createBitmap(bottom.getWidth(), bottom.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(combine);
@@ -181,6 +195,7 @@ public class CameraActivity extends Activity {
 
         OutputStream outStream = null;
         File file = getFile();
+
         try {
             outStream = new FileOutputStream(file);
             combine.compress(Bitmap.CompressFormat.JPEG,100,outStream);
@@ -189,8 +204,18 @@ public class CameraActivity extends Activity {
         } catch(Exception e){
             e.printStackTrace();
         }
-        //for now I don't need the combined bitmap
-        //return combine;
+    }
+
+    private void saveUser(){
+        File file = getUserFile();
+        try{
+            FileOutputStream fos = new FileOutputStream(file.getAbsolutePath());
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(trainer);
+            oos.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

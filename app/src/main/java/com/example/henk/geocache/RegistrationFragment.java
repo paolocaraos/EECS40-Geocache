@@ -14,8 +14,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 
 /**
  * Created by Henk on 2016/6/5.
@@ -39,6 +37,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         /*need to CREATE the username data*/
         newUsername = (EditText) view.findViewById(R.id.newUsername);
         String string = newUsername.getText().toString();
+        newUsername.setText(" ");
         trainer = ((MainActivity)getActivity()).getTrainer().setName(string);
         File folder = new File ("sdcard/Geocache/user_profile");
         //check for folder existence
@@ -60,6 +59,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
 
         Intent gotoMaps = new Intent(getActivity(), MapsActivity.class);
+        gotoMaps.putExtra("Trainer", trainer);
         startActivity(gotoMaps);
     }
 }

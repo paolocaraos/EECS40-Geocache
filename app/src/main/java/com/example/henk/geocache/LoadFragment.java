@@ -1,6 +1,5 @@
 package com.example.henk.geocache;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +14,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OutputStream;
 
 /**
  * Created by Henk on 2016/6/5.
@@ -42,6 +39,7 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
         /*gets username*/
         oldUsername = (EditText) view.findViewById(R.id.oldUsername);
         String string = oldUsername.getText().toString();
+        oldUsername.setText(" ");
 
         /*access file in storage*/
         File folder = new File ("sdcard/Geocache/user_profile");
@@ -67,6 +65,7 @@ public class LoadFragment extends Fragment implements View.OnClickListener {
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 trainer = (Trainer)ois.readObject();
                 ois.close();
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch(ClassNotFoundException e) {

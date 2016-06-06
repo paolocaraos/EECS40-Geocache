@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
             case (Constants.MAPS_REQUEST_CODE): {
                 if (resultCode == Activity.RESULT_OK) {
                     trainer = (Trainer) data.getSerializableExtra("Trainer");
+
                 }
                 break;
             }

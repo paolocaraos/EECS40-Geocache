@@ -30,7 +30,10 @@ public class Trainer implements Serializable{
     }
 
     void encounterPokemon(Pokemon p){
-        encounteredPokemonName = p.getName();
+        if(p == null)
+            encounteredPokemonName = null;
+        else
+            encounteredPokemonName = p.getName();
     }
 
     String getEncounteredPokemonName(){
@@ -49,14 +52,8 @@ public class Trainer implements Serializable{
         return this;
     }
 
-    String getListOfCaughtPokemon(){
-        String s = new String();
-
-        for(String name: pokemonCaught){
-            s.concat("\n" + name);
-        }
-
-        return s;
+    Vector<String> getListOfCaughtPokemon(){
+        return pokemonCaught;
     }
 
     String getName(){

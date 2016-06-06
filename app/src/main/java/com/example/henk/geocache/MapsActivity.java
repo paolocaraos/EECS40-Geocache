@@ -47,12 +47,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView locationText;
     private TextView username;
     private TextView points;
-    private TextView pokeCaught;
+
     private Button profileButton;
 
     public PokemonFactory pokeFactory;
     private Trainer trainer;
-    private Trainer receiveTrainer;
 
     private Vector<Biome> biomeVector = new Vector<Biome>(3, 1);
 
@@ -65,6 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public static final int DEFAULT_ZOOM_LEVEL = 17;
 
         public static final int CAMERA_ACTIVITY_REQUEST_CODE = 10;
+        public static final int PROFILE_ACTIVITY_REQUEST_CODE = 20;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         //added by Henk to get trainer obj from main activity
-        receiveTrainer  = (Trainer) getIntent().getSerializableExtra("Trainer");
+        trainer  = (Trainer) getIntent().getSerializableExtra("Trainer");
 
         pokeFactory = new PokemonFactory(this);
 
@@ -83,14 +83,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationText = (TextView) findViewById(R.id.locationText);
         username = (TextView) findViewById(R.id.username);
         points = (TextView) findViewById(R.id.points);
-        pokeCaught = (TextView) findViewById(R.id.pokeCaught);
-
-        String usernameText = "Username: " + receiveTrainer.getName();
-        String pointsText = "Score: " + String.valueOf(receiveTrainer.getScore());
-        String pokeCaughtText = "Pokemon Caught: " + receiveTrainer.getListOfCaughtPokemon();
-        username.setText(usernameText);
-        points.setText(pointsText);
-        pokeCaught.setText(pokeCaughtText);
 
         profileButton = (Button) findViewById(R.id.toProfile);
         profileButton.setOnClickListener(new View.OnClickListener() {
@@ -117,11 +109,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 biomeText.setText("Biome: " + recentKnownBiome.getType().name());
                 locationText.setText("My Location: " + recentKnownBiome.getName()
+                        /*
+
+                        Developer's Code: Uncomment these to get coordinates of locations
+
+                        Necessary in making more biomes.
+
                         + "\nMy Lat = " + location.getLatitude()
                         + "\nMy Long = " + location.getLongitude()
                         + "\n Marker Lat = " + markerLocation.getLatitude()
                         + "\nMarker Long = " + markerLocation.getLongitude()
-                        + "\nDistanceToMark = " + location.distanceTo(markerLocation));
+                        + "\nDistanceToMark = " + location.distanceTo(markerLocation)*/);
+
+                String usernameText = "Username: " + trainer.getName();
+                String pointsText = "Score: " + String.valueOf(trainer.getScore());
+                username.setText(usernameText);
+                points.setText(pointsText);
             }
 
             @Override
@@ -214,12 +217,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startActivityForResult(intent, ConfigConstants.CAMERA_ACTIVITY_REQUEST_CODE);
     }
 
+    public void onPokeCaught(View v){
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra("Trainer", trainer);
+        startActivityForResult(intent, ConfigConstants.PROFILE_ACTIVITY_REQUEST_CODE);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case (ConfigConstants.CAMERA_ACTIVITY_REQUEST_CODE): {
                 if (resultCode == Activity.RESULT_OK) {
+                    trainer = (Trainer) data.getSerializableExtra("Trainer");
+                }
+                break;
+            }
+            case (ConfigConstants.PROFILE_ACTIVITY_REQUEST_CODE):{
+                if(resultCode ==  Activity.RESULT_OK){
                     trainer = (Trainer) data.getSerializableExtra("Trainer");
                 }
                 break;

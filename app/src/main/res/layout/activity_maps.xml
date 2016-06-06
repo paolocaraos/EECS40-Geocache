@@ -15,7 +15,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
-        android:layout_height="261dp"
+        android:layout_height="206dp"
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:layout_gravity="center_horizontal"
@@ -52,15 +52,6 @@
         android:text="Nearby Pokemon: "
         android:id="@+id/pokemonText" />
 
-    <Button
-        android:layout_width="372dp"
-        android:layout_height="wrap_content"
-        android:text="Camera"
-        android:id="@+id/camera"
-        android:layout_gravity="center_horizontal|bottom"
-        android:onClick="onCamera"
-        android:nestedScrollingEnabled="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,17 +66,29 @@
         android:id="@+id/points"
         android:layout_gravity="center_horizontal" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:id="@+id/pokeCaught"
-        android:layout_gravity="center_horizontal" />
+        android:text="View Pokemon Caught"
+        android:id="@+id/viewPoke"
+        android:layout_gravity="center_horizontal|bottom"
+        android:onClick="onPokeCaught"
+        android:nestedScrollingEnabled="true" />
+
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="372dp"
         android:layout_height="wrap_content"
-        android:text="Profile"
+        android:text="Camera"
+        android:id="@+id/camera"
+        android:layout_gravity="center_horizontal|bottom"
+        android:onClick="onCamera"
+        android:nestedScrollingEnabled="true" />
+
+    <Button
+        android:layout_width="372dp"
+        android:layout_height="wrap_content"
+        android:text="Load Profile"
         android:id="@+id/toProfile"
         android:layout_gravity="center_horizontal|bottom"
         android:onClick="onClick" />
